@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getFirestore, collection, addDoc , serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
-
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 /* === Firebase Setup === */
 
 const firebaseConfig = {
@@ -27,6 +27,7 @@ console.log(auth);
 
 const textareaEl = document.getElementById("post-input")
 const postButtonEl = document.getElementById("post-btn")
+const fetchButtonEl = document.getElementById("fetch-btn")
 
 const userGreetingEl = document.getElementById("user-greeting")
 
@@ -48,6 +49,7 @@ const createAccountButtonEl = document.getElementById("create-account-btn");
 /* == UI - Event Listeners == */
 
 postButtonEl.addEventListener("click", postButtonPressed)
+fetchButtonEl.addEventListener("click", fetchButtonPressed)
 
 signInWithGoogleButtonEl.addEventListener("click", authSignInWithGoogle);
 signOutButtonEl.addEventListener("click", authSignOut);
@@ -173,8 +175,16 @@ function postButtonPressed() {
     }
 }
 
- 
-
+async function fetchButtonPressed() {
+    const user = auth.currentUser
+    if (user) {
+        const ref = doc(db, "users", "yes")
+        const snap = await getDoc(ref)
+        document.getElementById("post").innerHTML = snap.data()
+    } else {
+        console.error("User not logged in")
+    }
+}
 
 function showLoggedOutView() {
     hideView(viewLoggedIn)
@@ -197,3 +207,4 @@ function showLoggedOutView() {
     view.style.display = "none"
  }
  
+
