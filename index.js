@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getFirestore, collection, addDoc , serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js"
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 /* === Firebase Setup === */
 
 const firebaseConfig = {
@@ -176,13 +176,42 @@ function postButtonPressed() {
 }
 
 async function fetchButtonPressed() {
-    const user = auth.currentUser
+    const user = auth.currentUser; 
+    const postsRef = collection(db, "posts");
+    
     if (user) {
-        const ref = doc(db, "users", "yes")
-        const snap = await getDoc(ref)
-        document.getElementById("post").innerHTML = snap.data()
+        try {
+            const querySnapshot = await getDocs(postsRef);
+            if (!querySnapshot.empty) {
+                let postsHTML = "";
+                querySnapshot.forEach((doc) => {
+                    const body = doc.data().body || "No body available";
+                    const timestamp = doc.data().createdAt;
+                    const date = timestamp ? timestamp.toDate().toLocaleString() : "Unknown date";
+                    postsHTML += `
+                        <div style="
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            padding: 10px;
+                            margin: 10px 0;
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        ">
+                            <p><strong>Posted on:</strong> ${date}</p>
+                            <p>${body}</p>
+                        </div>
+                    `;
+                });
+
+                document.getElementById("post").innerHTML = postsHTML;
+            } else {
+                console.error("No documents found in the 'posts' collection.");
+                document.getElementById("post").innerHTML = "No posts available.";
+            }
+        } catch (error) {
+            console.error("Error fetching documents:", error);
+        }
     } else {
-        console.error("User not logged in")
+        console.error("User not logged in");
     }
 }
 
@@ -207,4 +236,3 @@ function showLoggedOutView() {
     view.style.display = "none"
  }
  
-
