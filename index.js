@@ -185,9 +185,9 @@ async function fetchButtonPressed() {
             if (!querySnapshot.empty) {
                 let postsHTML = "";
                 querySnapshot.forEach((doc) => {
-                    const body = doc.data().body || "No body available";
+                    const body = doc.data().body || "N/A";
                     const timestamp = doc.data().createdAt;
-                    const date = timestamp ? timestamp.toDate().toLocaleString() : "Unknown date";
+                    const date = timestamp ? timestamp.toDate().toLocaleString() : "N/A";
                     postsHTML += `
                         <div style="
                             border: 1px solid #ccc;
@@ -196,16 +196,15 @@ async function fetchButtonPressed() {
                             margin: 10px 0;
                             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                         ">
-                            <p><strong>Posted on:</strong> ${date}</p>
+                            <p>${date}</p>
                             <p>${body}</p>
                         </div>
                     `;
                 });
-
                 document.getElementById("post").innerHTML = postsHTML;
             } else {
-                console.error("No documents found in the 'posts' collection.");
-                document.getElementById("post").innerHTML = "No posts available.";
+                console.error("No documents");
+                document.getElementById("post").innerHTML = "None.";
             }
         } catch (error) {
             console.error("Error fetching documents:", error);
@@ -214,7 +213,6 @@ async function fetchButtonPressed() {
         console.error("User not logged in");
     }
 }
-
 function showLoggedOutView() {
     hideView(viewLoggedIn)
     showView(viewLoggedOut)
