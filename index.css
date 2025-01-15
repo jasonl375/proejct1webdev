@@ -283,6 +283,12 @@ classes to make the sign out buttons work
     gap: 1em;
  }
  
-
+#left-section {
+    align-self: left;
+}
+#ad {
+    height: 500px;
+    width: 500px;
+}
 /*  credit:coursera */
 
