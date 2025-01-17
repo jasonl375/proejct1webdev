@@ -304,5 +304,8 @@ classes to make the sign out buttons work
 #left-section {
     align-self: left;
 }
-
+#ad {
+    height: 500px;
+    width: 500px;
+}
 /*  credit:coursera */
