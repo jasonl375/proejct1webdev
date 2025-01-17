@@ -1,67 +1,70 @@
 <!DOCTYPE html>
 <html>
-
-    <head>
-        <title>Hot-and-Cold</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Calistoga&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="index.css">
-    </head>
-
-    <body>
-        <section id="logged-out-view">
-            <div class="container">
-                <h1 class="app-title">Hot-and-Cold</h1>
-                
-                <div class="provider-buttons">
-                    <button id="sign-in-with-google-btn" class="provider-btn">
-                        <img src="assets/providers/google.png" class="google-btn-logo">
-                        Sign in with Google
-                    </button>
-                </div>
-                
-                <div class="auth-fields-and-buttons">
-                    <input id="email-input" type="email" placeholder="Email">
-                    <input id="password-input" type="password" placeholder="Password">
-                    
-                    <button id="sign-in-btn" class="primary-btn">Sign in</button>
-                    <button id="create-account-btn" class="secondary-btn">Create Account</button>
-                </div>
+<head>
+    <title>Hot-and-Cold</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Calistoga&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <section id="logged-out-view">
+        <div class="container">
+            <h1 class="app-title">Hot-and-Cold</h1>
+            <div class="provider-buttons">
+                <button id="sign-in-with-google-btn" class="provider-btn">
+                    <img src="assets/providers/google.png" class="google-btn-logo">
+                    Sign in with Google
+                </button>
             </div>
-        </section>
-        
-        <section id="logged-in-view">
-            <div class="container">
-                <!-- log out button-->
-                <nav>
-                    <button id="sign-out-btn" class="icon-btn">
-                        <img src="assets/icons/logOut.jpg" class="icon-img-btn">
-                    </button>
-                </nav>
-
-                <div class="app-container">
-                    <div class="user-section">
-                        <img id="user-section img" src="assets/images/defaultPic.jpg">
-                        <h2 id="user-greeting"></h2>
-                    </div>
-                </div>
-
-                <div class="post-section">
-                    <textarea id="post-input" placeholder="Write down how you're feeling..."></textarea>
-                    <button id="post-btn" class="primary-btn">Post</button>
-                    <button id="fetch-btn" class="primary-btn">Fetch Posts</button>
-                    <p id="post"></p>
-                </div>
+            <div class="auth-fields-and-buttons">
+                <input id="email-input" type="email" placeholder="Email">
+                <input id="password-input" type="password" placeholder="Password">
+                <button id="sign-in-btn" class="primary-btn">Sign in</button>
+                <button id="create-account-btn" class="secondary-btn">Create Account</button>
             </div>
-
-        </section>
-	<div id="left-section">
-            <img src="download.jpg" id="ad">
         </div>
-        <script src="index.js" type="module"></script>
-    </body>
-</html>
+    </section>
 
-    <!--   credit: coursera-->
+    <section id="logged-in-view">
+        <div class="container">
+            <nav>
+                <button id="sign-out-btn" class="icon-btn">
+                    <img src="assets/icons/logOut.jpg" class="icon-img-btn">
+                </button>
+            </nav>
+    
+            <div class="app-container">
+                
+                <div class="user-section">
+                    <img id="user-profile-picture" src="assets/images/defaultPic.jpg">
+                    <h2 id="user-greeting"></h2>
+                </div>
+            </div>
+
+            <div class="post-section">
+                <textarea id="post-input" placeholder="Write down how you're feeling..."></textarea>
+                <div class="button-group">
+                    <button class="image-btn" data-number="1" data-image="emojis/agony.png">
+                        <img src="emojis/agony.png" alt="Image 1" width="50" height="50">
+                    </button>
+                    <button class="image-btn" data-number="2" data-image="emojis/happy.png">
+                        <img src="emojis/happy.png" alt="Image 2" width="50" height="50">
+                    </button>
+                    <button class="image-btn" data-number="3" data-image="emojis/neutral.png">
+                        <img src="emojis/neutral.png" alt="Image 3" width="50" height="50">
+                    </button>
+                    <button class="image-btn" data-number="4" data-image="emojis/sad.png">
+                        <img src="emojis/sad.png" alt="Image 4" width="50" height="50">
+                    </button>
+                </div>
+                <button id="post-btn" class="primary-btn">Post</button>
+                <button id="fetch-btn" class="primary-btn">Fetch Posts</button>
+                <div id="post"></div>
+            </div>
+        </div>
+    </section>
+    <script src="index.js" type="module"></script>
+</body>
+</html>
