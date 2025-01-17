@@ -46,6 +46,8 @@ const passwordInputEl = document.getElementById("password-input");
 const signInButtonEl = document.getElementById("sign-in-btn");
 const createAccountButtonEl = document.getElementById("create-account-btn");
 
+let selectedImage = null;
+
 /* == UI - Event Listeners == */
 
 postButtonEl.addEventListener("click", postButtonPressed)
@@ -56,6 +58,13 @@ signOutButtonEl.addEventListener("click", authSignOut);
 
 signInButtonEl.addEventListener("click", authSignInWithEmail);
 createAccountButtonEl.addEventListener("click", authCreateAccountWithEmail);
+
+document.querySelectorAll(".image-btn").forEach(button => {
+    button.addEventListener("click", () => {
+        selectedImage = button.getAttribute("data-image"); 
+        console.log(`Selected Image: ${selectedImage}`);
+    });
+});
 
 /* === Main Code === */
 
@@ -149,13 +158,9 @@ function showUserGreeting(element, user) {
 
 /* == Functions - UI Functions == */
 
-async function addPostToDB(postBody, user) {
+async function addPostToDB(postData, user) {
     try {
-        const document = await addDoc(collection(db, "posts"), {
-            body: postBody,
-            userId: user.uid, 
-            createdAt: serverTimestamp()
-        });
+        const document = await addDoc(collection(db, "posts"), postData);
         console.log("Document written with ID: ", document.id);
     } catch (e) {
         console.error("Error adding document: ", e);
@@ -165,20 +170,36 @@ async function addPostToDB(postBody, user) {
 
 function postButtonPressed() {
     const postBody = textareaEl.value;
-    const user = auth.currentUser; 
-   
+    const user = auth.currentUser;
+
     if (postBody && user) {
-        addPostToDB(postBody, user); 
+        const postData = {
+            body: postBody,
+            userId: user.uid,
+            createdAt: serverTimestamp(),
+            //gif: "IMG_8149.gif"
+        };
+
+        
+        if (selectedImage) {
+            postData.image = selectedImage;
+        }
+
+        // Add post to database
+        addPostToDB(postData, user);
+
+        
         clearInputField(textareaEl);
+        selectedImage = null; 
     } else {
-        console.error("User not logged in or post body is empty.");
+        console.error("user not logged in or post body is empty");
     }
 }
 
 async function fetchButtonPressed() {
-    const user = auth.currentUser; 
+    const user = auth.currentUser;
     const postsRef = collection(db, "posts");
-    
+
     if (user) {
         try {
             const querySnapshot = await getDocs(postsRef);
@@ -186,18 +207,18 @@ async function fetchButtonPressed() {
                 let postsHTML = "";
                 querySnapshot.forEach((doc) => {
                     const body = doc.data().body || "N/A";
+                    const image = doc.data().image;
+                    //const gif = doc.data().gif;  
                     const timestamp = doc.data().createdAt;
                     const date = timestamp ? timestamp.toDate().toLocaleString() : "N/A";
+
+                    //${gif ? `<img src="${gif}" alt="Post GIF" style="width: 300px; height: 200px;">` : ""}  
+
                     postsHTML += `
-                        <div style="
-                            border: 1px solid #ccc;
-                            border-radius: 5px;
-                            padding: 10px;
-                            margin: 10px 0;
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                        ">
+                        <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                             <p>${date}</p>
                             <p>${body}</p>
+                            ${image ? `<img src="${image}" alt="Post Image" style="width: 50px; height: 50px;">` : ""} 
                         </div>
                     `;
                 });
@@ -213,6 +234,8 @@ async function fetchButtonPressed() {
         console.error("User not logged in");
     }
 }
+
+
 function showLoggedOutView() {
     hideView(viewLoggedIn)
     showView(viewLoggedOut)
