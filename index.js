@@ -215,7 +215,7 @@ async function fetchButtonPressed() {
                     //${gif ? `<img src="${gif}" alt="Post GIF" style="width: 300px; height: 200px;">` : ""}  
 
                     postsHTML += `
-                        <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                        <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin: 10px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); background-color: #f5f5f5; color: #333;">
                             <p>${date}</p>
                             <p>${body}</p>
                             ${image ? `<img src="${image}" alt="Post Image" style="width: 50px; height: 50px;">` : ""} 
